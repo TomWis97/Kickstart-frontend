@@ -1,0 +1,64 @@
+body {
+        font-family: 'Open Sans';
+}
+
+h1,h2,h3,h4 {
+        font-family: Roboto;
+        margin-bottom: 0;
+}
+
+a {
+        text-decoration: none;
+        color: black;
+}
+
+#container {
+        max-width: 700px;
+        border: 1px solid black;
+        border-radius: 10px;
+        margin: 10px auto;
+        padding: 10px;
+}
+
+#header {
+        text-align: center;
+}
+
+.newhost {
+        border: 1px solid grey;
+        padding: 10px;
+        margin: 5px 0;
+}
+.newhost h2 {
+        margin-top: 0px;
+        margin-bottom: 5px;
+}
+
+.newhost ul {
+        margin: 0;
+}
+
+.newhost .icon {
+        /* Dirty hack to position the icon somewhat in the center, but fuck attempting to align this properly vertically. */
+        position: relative;
+        top: 0px;
+        width: 50px;
+        float: right;
+}
+
+.done {
+        background-color: #bfbfbf;
+        color: #2d2d2d;
+}
+
+/* Define fonts */
+@font-face {
+        font-family: 'Open Sans';
+        font-style: normal;
+        src: url('fonts/OpenSans-Regular.ttf');
+}
+@font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        src: url('fonts/Roboto-Light.ttf');
+}
