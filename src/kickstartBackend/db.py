@@ -1,26 +1,24 @@
 import sqlite3
 #TODO Change path to /data before putting it in a Docker container.
 DATABASE_PATH = '/tmp/ksdb.sqlite'
-# Kickstart variables. The database also has columns for id and order.
-VARIABLES = ('net-hostname', 'net-type', 'net-ip', 'net-netmask', 'net-gateway',
-             'net-nameserver', 'root-password', 'user-name', 'user-gecos',
-             'user-groups', 'user-password')
 
 def createdb():
-    """Create a new table with the given filename."""
+    """Create a new database."""
     sql = """CREATE TABLE hosts (
         "id" text PRIMARY KEY,
         "order" integer,
-        {}
-    )"""
-    # Some great code to dynamically generate the SQL query based on VARIABLES.
-    varSql = ''
-    for num, variable in enumerate(VARIABLES):
-        varSql = varSql + '"' + variable + '"' + ' text'
-        if not num == (len(VARIABLES)-1):
-            # Don't add a ',' after the last variable.
-            varSql = varSql + ', '
-    sql = sql.format(varSql)
+        "net-hostname"
+        "net-hostname" text,
+        "net-type" text,
+        "net-ip" text,
+        "net-netmask" text,
+        "net-gateway" text,
+        "net-nameserver" text,
+        "root-password" text,
+        "user-name" text,
+        "user-gecos" text,
+        "user-groups" text,
+        "user-password" text);"""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
     c.execute(sql)
@@ -29,49 +27,79 @@ def createdb():
 
 def write_host(data):
     """Insert or update host entry. Function expects an dictionary with vars."""
-    if len(data) != (len(VARIABLES) + 2):
-        raise ValueError("Too many or too few data items!")
     sql = """INSERT OR REPLACE INTO hosts (
-        'id', 'order', {varList}) VALUES ({varPlaceholders});"""
-    # Again, some beautifully crafted code to generate the query. /s
-    # Generate the column names.
-    varList = ''
-    for num, variable in enumerate(VARIABLES):
-        varList = varList + '"' + variable + '"'
-        # Don't insert an ',' after the last item.
-        if not num == (len(VARIABLES)-1):
-            varList = varList + ', '
-    # Generate the placeholder list.
-    varPlaceholders = ''
-    for i in range(len(VARIABLES) + 2):
-        varPlaceholders = varPlaceholders + '?'
-        # Plus 2 for id and order. Minus one because of zero-indexed.
-        if not i == (len(VARIABLES)+1):
-            varPlaceholders = varPlaceholders + ', '
-    sql = sql.format(varList=varList, id=data['id'], order=data['order'],
-                                                varPlaceholders=varPlaceholders)
+        "id",
+        "order",
+        "net-hostname",
+        "net-type",
+        "net-ip",
+        "net-netmask",
+        "net-gateway",
+        "net-nameserver",
+        "root-password",
+        "user-name",
+        "user-gecos",
+        "user-groups",
+        "user-password"
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    sqlExecute = "c.execute(sql,[data['id'], data['order'], {})""
-    sqlVars = ''
-    for var in VARIABLES:
-        sqlVars = sqlVars + 'data[{}]'.format(var)
-        # Something something insert commas.
-        #if not i
-    c.execute(sql)
+    c.execute(sql,
+        [data['id'],
+        data['order'],
+        data['net-hostname'],
+        data['net-type'],
+        data['net-ip'],
+        data['net-netmask'],
+        data['net-gateway'],
+        data['net-nameserver'],
+        data['root-password'],
+        data['user-name'],
+        data['user-gecos'],
+        data['user-groups'],
+        data['user-password']])
     conn.commit()
     conn.close()
 
+def delete_host(id):
+    """Delete host with id."""
+    conn = sqlite3.connect(DATABASE_PATH)
+    c = conn.cursor()
+    c.execute("DELETE FROM hosts WHERE id = ?", [id,])
+    conn.commit()
+    conn.close()
+
+def read_host(id):
+    """Get all data of host with id."""
+    conn = sqlite3.connect(DATABASE_PATH)
+    c = conn.cursor()
+    c.execute("SELECT * FROM hosts WHERE id = ?", [id,])
+    data = c.fetchone()
+    conn.close()
+    return data
+
+def read_all_hosts():
+    """Get all data from the hosts table."""
+    conn = sqlite3.connect(DATABASE_PATH)
+    c = conn.cursor()
+    c.execute("SELECT * FROM hosts")
+    data = c.fetchall()
+    conn.close()
+    return data
+
 def test_write():
+    """Not to be used in production. Test code for this module."""
+    import os
+    os.remove(DATABASE_PATH)
     createdb()
-    data = {
-        'id': 'abcd',
-        'order': 123,
-        'net-hostname': 'hostnaam',
+    data1 = {
+        'id': 'abc',
+        'order': 1,
+        'net-hostname': 'host1.test.lab',
         'net-type': 'dhcp',
-        'net-ip': '127.0.0.1',
+        'net-ip': '10.0.0.1',
         'net-netmask': '255.255.255.0',
-        'net-gateway': '127.0.0.2',
+        'net-gateway': '10.0.0.254',
         'net-nameserver': '8.8.8.8,8.8.4.4',
         'root-password': 'geencryptrootwachtwoord',
         'user-name': 'admin',
@@ -79,4 +107,23 @@ def test_write():
         'user-groups': 'wheel,anderegroep',
         'user-password': 'geencryptuserpassword'
     }
-    write_host(data)
+    write_host(data1)
+    data2 = {
+        'id': 'def',
+        'order': 2,
+        'net-hostname': 'host2.test.lab',
+        'net-type': 'dhcp',
+        'net-ip': '10.0.0.1',
+        'net-netmask': '255.255.255.0',
+        'net-gateway': '10.0.0.254',
+        'net-nameserver': '8.8.8.8,8.8.4.4',
+        'root-password': 'geencryptrootwachtwoord',
+        'user-name': 'admin',
+        'user-gecos': 'Administrator',
+        'user-groups': 'wheel,anderegroep',
+        'user-password': 'geencryptuserpassword'
+    }
+    write_host(data2)
+    print("========== All hosts:\n", read_all_hosts())
+    delete_host('abc')
+    print("========== Host def:\n", read_host('def'))
