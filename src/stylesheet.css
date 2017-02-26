@@ -14,6 +14,7 @@ a {
 
 #container {
         max-width: 700px;
+        /*min-width: 500px;*/
         border: 1px solid black;
         border-radius: 10px;
         margin: 10px auto;
@@ -49,6 +50,49 @@ a {
 .done {
         background-color: #bfbfbf;
         color: #2d2d2d;
+}
+
+.button {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    margin: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.button span {
+    text-align: center;
+    color: white;
+    display: block;
+}
+
+.newhost-btn {
+    margin-left: 0;
+    float: left;
+    width: 30%;
+    background-color: #00c123;
+    border-color: #007c16;
+}
+
+.edit-btn {
+    margin-right: 0;
+    float: right;
+    width: 20%;
+    background-color: #008ccf;
+    border-color: #004782;
+}
+
+/* Edit page */
+.settings label {
+        display: inline-block;
+        width: 10em;
+        text-align: right;
+}
+
+.settings input {
+    margin-left: 5px;
 }
 
 /* Define fonts */
