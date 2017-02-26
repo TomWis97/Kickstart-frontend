@@ -32,24 +32,32 @@ def write_host(data):
     if len(data) != (len(VARIABLES) + 2):
         raise ValueError("Too many or too few data items!")
     sql = """INSERT OR REPLACE INTO hosts (
-        'id', 'order', {varList}) VALUES ("{id}", {order}, {varValues});"""
+        'id', 'order', {varList}) VALUES ({varPlaceholders});"""
     # Again, some beautifully crafted code to generate the query. /s
+    # Generate the column names.
     varList = ''
     for num, variable in enumerate(VARIABLES):
         varList = varList + '"' + variable + '"'
         # Don't insert an ',' after the last item.
         if not num == (len(VARIABLES)-1):
             varList = varList + ', '
-    varValues = ''
-    for num, variable in enumerate(VARIABLES):
-        varValues = varValues + '"' + data[variable] + '"'
-        # Don't insert an ',' after the last item.
-        if not num == (len(VARIABLES)-1):
-            varValues = varValues + ', '
+    # Generate the placeholder list.
+    varPlaceholders = ''
+    for i in range(len(VARIABLES) + 2):
+        varPlaceholders = varPlaceholders + '?'
+        # Plus 2 for id and order. Minus one because of zero-indexed.
+        if not i == (len(VARIABLES)+1):
+            varPlaceholders = varPlaceholders + ', '
     sql = sql.format(varList=varList, id=data['id'], order=data['order'],
-                                                            varValues=varValues)
+                                                varPlaceholders=varPlaceholders)
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
+    sqlExecute = "c.execute(sql,[data['id'], data['order'], {})""
+    sqlVars = ''
+    for var in VARIABLES:
+        sqlVars = sqlVars + 'data[{}]'.format(var)
+        # Something something insert commas.
+        #if not i
     c.execute(sql)
     conn.commit()
     conn.close()
