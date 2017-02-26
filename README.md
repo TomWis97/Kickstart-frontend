@@ -22,3 +22,6 @@ Having an Docker container with a DHCP, TFTP and kickstart server. An newly crea
   - [ ] Webserver
 - [ ] Docker file.
   - [ ] Entrypoint for dhcp, tftp and python servers.
+
+## Features that would be nice.
+- Integration with VirtualBox/VMWare Workstation/VMWare ESXi.
