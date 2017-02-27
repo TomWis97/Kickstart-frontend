@@ -3,6 +3,14 @@ import sqlite3
 DATABASE_PATH = '/tmp/ksdb.sqlite'
 
 
+def _dict_factory(cursor, row):
+    """Function required to create a dictionary instead of an tuple."""
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
 def createdb():
     """Create a new database."""
     sql = """CREATE TABLE hosts (
@@ -78,6 +86,7 @@ def delete_host(id):
 def read_host(id):
     """Get all data of host with id."""
     conn = sqlite3.connect(DATABASE_PATH)
+    conn.row_factory = _dict_factory
     c = conn.cursor()
     c.execute("SELECT * FROM hosts WHERE id = ?", [id, ])
     data = c.fetchone()
@@ -88,6 +97,7 @@ def read_host(id):
 def read_all_hosts():
     """Get all data from the hosts table."""
     conn = sqlite3.connect(DATABASE_PATH)
+    conn.row_factory = _dict_factory
     c = conn.cursor()
     c.execute("SELECT * FROM hosts")
     data = c.fetchall()
