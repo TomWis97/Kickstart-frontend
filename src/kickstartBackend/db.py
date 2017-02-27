@@ -16,6 +16,7 @@ def createdb():
     sql = """CREATE TABLE hosts (
         "id" text PRIMARY KEY,
         "order" integer,
+        "done" integer,
         "net-hostname"
         "net-hostname" text,
         "net-type" text,
@@ -40,6 +41,7 @@ def write_host(data):
     sql = """INSERT OR REPLACE INTO hosts (
         "id",
         "order",
+        "done",
         "net-hostname",
         "net-type",
         "net-ip",
@@ -59,6 +61,7 @@ def write_host(data):
         [
             data['id'],
             data['order'],
+            data['done'].
             data['net-hostname'],
             data['net-type'],
             data['net-ip'],
@@ -113,6 +116,7 @@ def test_write():
     data1 = {
         'id': 'abc',
         'order': 1,
+        'done': 0,
         'net-hostname': 'host1.test.lab',
         'net-type': 'dhcp',
         'net-ip': '10.0.0.1',
