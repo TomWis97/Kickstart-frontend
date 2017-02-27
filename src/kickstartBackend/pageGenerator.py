@@ -23,6 +23,7 @@ KS_ROOT = 'rootpw --iscrypted "{root_password}"'
 # - generate_index
 # - generate_edit
 # - generate_redirect
+# - generate_kickstart
 
 
 def generate_index():
