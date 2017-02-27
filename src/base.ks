@@ -8,9 +8,8 @@ timezone Europe/Amsterdam
 firstboot --disable
 ignoredisk --only-use=sda
 
-#network --bootproto=dhcp --activate --device=link
-network --bootproto=static --ip={net-ip} --netmask={net-netmask} --gateway={net-gateway} --nameserver={net-nameserver} --device=link
-network --hostname={net-hostname}
+{net_settings}
+network --hostname="{net_hostname}"
 
 # Might wanna change for EFI booting.
 bootloader --location=mbr --boot-drive=sda
@@ -20,8 +19,8 @@ selinux --enforcing
 install
 url --url http://server/path
 
-rootpw --iscrypted {root-password}
-user --name={user-name} --gecos={user-gecos} --iscrypted={user-password} --groups=wheel
+{root_settings}
+user --name="{user_name}" --gecos="{user_gecos}" --password="{user_password}" --iscrypted --groups="{user_groups}"
 
 
 # Maybe interesting options:

@@ -14,59 +14,52 @@
                 </div>
                 <div id="contents">
                     <form action="post">
+                        <input type="hidden" name="id" value="{id}"/>
                         <h2>Hostname</h2>
-                        <input type="text" name="net-hostname" pattern="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$" />
+                        <input type="text" name="net-hostname" value="{net_hostname}" pattern="{regex_hostname}" />
                         <h2>Network</h2>
-                        <input type="radio" name="net-type" id="dhcp" value="dhcp" />
+                        <input type="radio" name="net-type" id="dhcp" value="dhcp" {net_type_dhcp} />
                         <label for="dhcp">DHCP</label>
-                        <input type="radio" name="net-type" id="static" value="static" checked />
+                        <input type="radio" name="net-type" id="static" value="static" {net_type_static} />
                         <label for="static">Static</label>
                         <div class="settings">
                             <div>
-                                <label for="net-ip">IP Address:</label><input id="net-ip" type="text" name="net-ip" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" style="width: 9em;" />/<input type="number" name="net-numnetmask" min="1" max="32" value="24" style="width: 3em;" />
+                                <label for="net-ip">IP Address:</label><input id="net-ip" type="text" name="net-ip" value="{net_ip}" pattern="{regex_ip}" style="width: 9em;" />/<input type="number" name="net-numnetmask" value="{net_netmask}" min="1" max="32" value="24" style="width: 4em;" />
                             </div>
                             <div>
-                                <label for="net-gateway">Gateway:</label><input id="net-gateway" type="text" name="net-gateway" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" style="width: 9em;" />
+                                <label for="net-gateway">Gateway:</label><input id="net-gateway" type="text" name="net-gateway" value="{net_gateway}" pattern="{regex_ip}" style="width: 9em;" />
                             </div>
                             <div>
-                                <label for="net-dns1">DNS 1:</label><input id="net-dns1" type="text" name="net-dns1" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" style="width: 9em;" />
+                                <label for="net-dns1">DNS 1:</label><input id="net-dns1" type="text" name="net-dns1" value="{net_dns_1}" pattern="{regex_ip}" style="width: 9em;" />
                             </div>
                             <div>
-                                <label for="net-dns2">DNS 2:</label><input id="net-dns2" type="text" name="net-dns2" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" style="width: 9em;" />
+                                <label for="net-dns2">DNS 2:</label><input id="net-dns2" type="text" name="net-dns2" value="{net_dns_2}" pattern="{regex_ip}" style="width: 9em;" />
                             </div>
                             <div>
-                                <label for="net-dns3">DNS 3:</label><input id="net-dns3" type="text" name="net-dns3" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" style="width: 9em;" />
+                                <label for="net-dns3">DNS 3:</label><input id="net-dns3" type="text" name="net-dns3" value="{net_dns_3}" pattern="{regex_ip}" style="width: 9em;" />
                             </div>
                         </div>
                         <h2>Users</h2>
                         <div class="settings">
                             <div style="margin-bottom: 10px;">
-                                <label for="rootpw">Root Password:</label><input type="password" id="rootpw" name="rootpw">
+                                <label for="rootpw">Root Password:</label><input type="password" id="rootpw" name="rootpw" value="{root_password}">
                             </div>
                             <div>
-                                <label for="user-name">Username:</label><input type="text" id="user-name" name="user-name">
+                                <label for="user-name">Username:</label><input type="text" id="user-name" name="user-name" value="{user_name}">
                             </div>
                             <div>
-                                <label for="user-gecos">Full name:</label><input type="text" id="user-gecos" name="user-gecos">
+                                <label for="user-gecos">Full name:</label><input type="text" id="user-gecos" name="user-gecos" value="{user_gecos}">
                             </div>
                             <div>
-                                <label for="user-groups">Additional groups:</label><input type="text" id="user-groups" name="user-groups">
+                                <label for="user-groups">Additional groups:</label><input type="text" id="user-groups" name="user-groups"  value="{user_groups}">
                             </div>
                             <div>
-                                <label for="userpw">Password:</label><input type="text" id="userpw" name="userpw">
+                                <label for="userpw">Password:</label><input type="password" id="userpw" name="userpw" value="{user_password}">
                             </div>
                         </div>
                         <button type="submit">Submit</button>
                     </form>
                 </div>
             </div>
-            <!--<script src="jquery-3.1.1.slim.min.js" />
-            <script>
-                $(document).ready(function(){
-                    $('input[type=radio][name=net-type]').click(function(){
-                        alert("Selected");
-                    });
-                });
-            </script>-->
     </body>
 </html>

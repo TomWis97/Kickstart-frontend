@@ -1,4 +1,7 @@
 import sqlite3
+import uuid
+
+
 # TODO Change path to /data before putting it in a Docker container.
 DATABASE_PATH = '/tmp/ksdb.sqlite'
 
@@ -38,6 +41,8 @@ def createdb():
 
 def write_host(data):
     """Insert or update host entry. Expects an dictionary with vars."""
+    if not 'order' in data: data['order'] = 0
+    if not 'done' in data: data['done'] = 0
     sql = """INSERT OR REPLACE INTO hosts (
         "id",
         "order",
@@ -53,7 +58,7 @@ def write_host(data):
         "user-gecos",
         "user-groups",
         "user-password"
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
     c.execute(
@@ -61,7 +66,7 @@ def write_host(data):
         [
             data['id'],
             data['order'],
-            data['done'].
+            data['done'],
             data['net-hostname'],
             data['net-type'],
             data['net-ip'],
@@ -81,7 +86,7 @@ def delete_host(id):
     """Delete host with id."""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute("DELETE FROM hosts WHERE id = ?", [id, ])
+    c.execute('DELETE FROM hosts WHERE id = ?', [id, ])
     conn.commit()
     conn.close()
 
@@ -91,7 +96,7 @@ def read_host(id):
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = _dict_factory
     c = conn.cursor()
-    c.execute("SELECT * FROM hosts WHERE id = ?", [id, ])
+    c.execute('SELECT * FROM hosts WHERE id = ?', [id, ])
     data = c.fetchone()
     conn.close()
     return data
@@ -102,50 +107,14 @@ def read_all_hosts():
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = _dict_factory
     c = conn.cursor()
-    c.execute("SELECT * FROM hosts")
+    c.execute('SELECT * FROM hosts ORDER BY "order"')
     data = c.fetchall()
     conn.close()
     return data
 
 
-def test_write():
-    """Not to be used in production. Test code for this module."""
-    import os
-    os.remove(DATABASE_PATH)
-    createdb()
-    data1 = {
-        'id': 'abc',
-        'order': 1,
-        'done': 0,
-        'net-hostname': 'host1.test.lab',
-        'net-type': 'dhcp',
-        'net-ip': '10.0.0.1',
-        'net-netmask': '255.255.255.0',
-        'net-gateway': '10.0.0.254',
-        'net-nameserver': '8.8.8.8,8.8.4.4',
-        'root-password': 'geencryptrootwachtwoord',
-        'user-name': 'admin',
-        'user-gecos': 'Administrator',
-        'user-groups': 'wheel,anderegroep',
-        'user-password': 'geencryptuserpassword'
-    }
-    write_host(data1)
-    data2 = {
-        'id': 'def',
-        'order': 2,
-        'net-hostname': 'host2.test.lab',
-        'net-type': 'dhcp',
-        'net-ip': '10.0.0.1',
-        'net-netmask': '255.255.255.0',
-        'net-gateway': '10.0.0.254',
-        'net-nameserver': '8.8.8.8,8.8.4.4',
-        'root-password': 'geencryptrootwachtwoord',
-        'user-name': 'admin',
-        'user-gecos': 'Administrator',
-        'user-groups': 'wheel,anderegroep',
-        'user-password': 'geencryptuserpassword'
-    }
-    write_host(data2)
-    print("========== All hosts:\n", read_all_hosts())
-    delete_host('abc')
-    print("========== Host def:\n", read_host('def'))
+def move_top(id):
+    """Move host with ID to top by increasing the "order" value."""
+    conn = sqlite3.connect(DATABASE_PATH)
+    c = conn.cursor()
+    c.execute()
