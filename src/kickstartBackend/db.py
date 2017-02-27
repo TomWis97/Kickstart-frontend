@@ -1,6 +1,7 @@
 import sqlite3
-#TODO Change path to /data before putting it in a Docker container.
+# TODO Change path to /data before putting it in a Docker container.
 DATABASE_PATH = '/tmp/ksdb.sqlite'
+
 
 def createdb():
     """Create a new database."""
@@ -25,8 +26,9 @@ def createdb():
     conn.commit()
     conn.close()
 
+
 def write_host(data):
-    """Insert or update host entry. Function expects an dictionary with vars."""
+    """Insert or update host entry. Expects an dictionary with vars."""
     sql = """INSERT OR REPLACE INTO hosts (
         "id",
         "order",
@@ -41,42 +43,47 @@ def write_host(data):
         "user-gecos",
         "user-groups",
         "user-password"
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute(sql,
-        [data['id'],
-        data['order'],
-        data['net-hostname'],
-        data['net-type'],
-        data['net-ip'],
-        data['net-netmask'],
-        data['net-gateway'],
-        data['net-nameserver'],
-        data['root-password'],
-        data['user-name'],
-        data['user-gecos'],
-        data['user-groups'],
-        data['user-password']])
+    c.execute(
+        sql,
+        [
+            data['id'],
+            data['order'],
+            data['net-hostname'],
+            data['net-type'],
+            data['net-ip'],
+            data['net-netmask'],
+            data['net-gateway'],
+            data['net-nameserver'],
+            data['root-password'],
+            data['user-name'],
+            data['user-gecos'],
+            data['user-groups'],
+            data['user-password']])
     conn.commit()
     conn.close()
+
 
 def delete_host(id):
     """Delete host with id."""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute("DELETE FROM hosts WHERE id = ?", [id,])
+    c.execute("DELETE FROM hosts WHERE id = ?", [id, ])
     conn.commit()
     conn.close()
+
 
 def read_host(id):
     """Get all data of host with id."""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute("SELECT * FROM hosts WHERE id = ?", [id,])
+    c.execute("SELECT * FROM hosts WHERE id = ?", [id, ])
     data = c.fetchone()
     conn.close()
     return data
+
 
 def read_all_hosts():
     """Get all data from the hosts table."""
@@ -86,6 +93,7 @@ def read_all_hosts():
     data = c.fetchall()
     conn.close()
     return data
+
 
 def test_write():
     """Not to be used in production. Test code for this module."""
