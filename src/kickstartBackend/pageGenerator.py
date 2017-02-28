@@ -175,10 +175,20 @@ def process_edit(data):
         data['root-password'] = crypt.crypt(data['root-password'])
     if data['user-password'] != currentData['user-password']:
         data['user-password'] = crypt.crypt(data['user-password'])
-    # TODO: Handle missing order value.
+    # Check if order is integer.
+    queueTop = False
+    try:
+        tmp = int(data['order'])
+        if tmp == 0:
+            queueTop = True
+    except:
+        queueTop = True
+        data['order'] = 0
     # TODO: You shouldn't trust user input. Yet we just push everything to db.
     # WARNING: FIX THIS SECURITY HOLE.
     db.write_data(data)
+    if queueTop:
+        db.move_top(data['id'])
     return generate_redirect('index.html')
 
 
