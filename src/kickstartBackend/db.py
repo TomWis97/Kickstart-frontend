@@ -41,8 +41,10 @@ def createdb():
 
 def write_host(data):
     """Insert or update host entry. Expects an dictionary with vars."""
-    if not 'order' in data: data['order'] = 0
-    if not 'done' in data: data['done'] = 0
+    if 'order' not in data:
+        data['order'] = 0
+    if 'done' not in data:
+        data['done'] = 0
     sql = """INSERT OR REPLACE INTO hosts (
         "id",
         "order",
@@ -66,7 +68,8 @@ def write_host(data):
         [
             data['id'],
             data['order'],
-            data['done'],
+            # Mark host as not done after submitting.
+            0,
             data['net-hostname'],
             data['net-type'],
             data['net-ip'],
@@ -93,6 +96,7 @@ def delete_host(id):
 
 def read_host(id):
     """Get all data of host with id."""
+    # TODO: Load defaults if host does not exist.
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = _dict_factory
     c = conn.cursor()
@@ -117,4 +121,33 @@ def move_top(id):
     """Move host with ID to top by increasing the "order" value."""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute()
+    c.execute('SELECT MAX("order") FROM hosts')
+    maxOrder = c.fetchone()[0]
+    newOrder = maxOrder + 1
+    c.execute('UPDATE hosts SET "order" = ? WHERE id = ?', (newOrder, id))
+    c.execute('UPDATE hosts SET "done" = 0 WHERE id = ?', (id, ))
+    conn.commit()
+    conn.close()
+    return None
+
+
+def get_top_id():
+    """Get the id of the top host in the queue."""
+    conn = sqlite3.connect(DATABASE_PATH)
+    c = conn.cursor()
+    c.execute('SELECT "id" FROM hosts WHERE "done" = 0 ORDER BY "order" DESC LIMIT 1')
+    returnData = c.fetchone()
+    if returnData == None:
+        return 'default'
+    else:
+        return returnData[0]
+
+
+def mark_as_done(id):
+    if not id == 'default':
+        conn = sqlite3.connect(DATABASE_PATH)
+        c = conn.cursor()
+        c.execute('UPDATE hosts SET "done" = 1 WHERE id = ?', (id, ))
+        conn.commit()
+        conn.close()
+    return None

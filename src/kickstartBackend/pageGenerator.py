@@ -1,4 +1,5 @@
 import os
+import crypt
 from . import db
 from ipaddress import ip_network
 
@@ -167,27 +168,38 @@ def generate_redirect(url):
 def process_edit(data):
     """Process the POST data of a host edit. Expects dictionary with vars."""
     # Don't change password in database if it's still the hash.
-    pass
+    # If it's something else, it has to be hashed again.
+    # Read current data.
+    currentData = db.read_host(data['id'])
+    if data['root-password'] != currentData['root-password']:
+        data['root-password'] = crypt.crypt(data['root-password'])
+    if data['user-password'] != currentData['user-password']:
+        data['user-password'] = crypt.crypt(data['user-password'])
+    # TODO: Handle missing order value.
+    # TODO: You shouldn't trust user input. Yet we just push everything to db.
+    # WARNING: FIX THIS SECURITY HOLE.
+    db.write_data(data)
+    return generate_redirect('index.html')
 
 
 def process_move(id):
     """Move a host to the top of the queue."""
-    pass
+    db.move_top(id)
+    return generate_redirect('index.html')
 
 
 def process_delete(id):
     """Delete an host."""
-    pass
+    db.delete_host(id)
+    return generate_redirect('index.html')
 
 
 def open_first_kickstart():
     """Generate the first kickstart in the queue and mark it as "done"."""
-    pass
+    topId = db.get_top_id()]
+    db.mark_as_done(topId)
+    return generate_kickstart(topId)
 
 
 def edit_base_kickstart():
-    pass
-
-
-def edit_defaults():
     pass
