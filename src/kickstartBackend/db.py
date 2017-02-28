@@ -135,9 +135,10 @@ def get_top_id():
     """Get the id of the top host in the queue."""
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute('SELECT "id" FROM hosts WHERE "done" = 0 ORDER BY "order" DESC LIMIT 1')
+    c.execute('SELECT "id" FROM hosts WHERE "done" = 0 ORDER BY "order"'
+              ' DESC LIMIT 1')
     returnData = c.fetchone()
-    if returnData == None:
+    if returnData is None:
         return 'default'
     else:
         return returnData[0]

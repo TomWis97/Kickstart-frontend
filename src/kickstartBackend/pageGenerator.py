@@ -196,7 +196,7 @@ def process_delete(id):
 
 def open_first_kickstart():
     """Generate the first kickstart in the queue and mark it as "done"."""
-    topId = db.get_top_id()]
+    topId = db.get_top_id()
     db.mark_as_done(topId)
     return generate_kickstart(topId)
 
