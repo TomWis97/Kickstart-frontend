@@ -37,6 +37,28 @@ def createdb():
     c.execute(sql)
     conn.commit()
     conn.close()
+    # Creating default host.
+    defaults = {
+        'id': 'default',
+        'order': 0,
+        'done': 0,
+        'net-hostname': 'localhost.localdomain',
+        'net-type': 'dhcp',
+        'net-ip': '',
+        'net-netmask': '',
+        'net-gateway': '',
+        'net-nameserver': '',
+        'root-password': ('$6$NdJaNi4X95fGfLMH$MIZCX8Mx98KZpKm3OCnzB25pMv9w73K'
+                          'BAVqANxPtLJr1Um0XpQsqlQ5PvI3vCmkt3bTwKY1NrGLSJUAgqv'
+                          'gT21'),
+        'user-name': 'admin',
+        'user-gecos': 'Administrator',
+        'user-groups': 'wheel',
+        'user-password': ('$6$NdJaNi4X95fGfLMH$MIZCX8Mx98KZpKm3OCnzB25pMv9w73K'
+                          'BAVqANxPtLJr1Um0XpQsqlQ5PvI3vCmkt3bTwKY1NrGLSJUAgqv'
+                          'gT21')
+    }
+    db.write_host(defaults)
 
 
 def write_host(data):
@@ -96,12 +118,14 @@ def delete_host(id):
 
 def read_host(id):
     """Get all data of host with id."""
-    # TODO: Load defaults if host does not exist.
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = _dict_factory
     c = conn.cursor()
     c.execute('SELECT * FROM hosts WHERE id = ?', [id, ])
     data = c.fetchone()
+    if data is None:
+        c.execute('SELECT * FROM hosts WHERE id = ?', ['default', ])
+        data = c.fetchone()
     conn.close()
     return data
 

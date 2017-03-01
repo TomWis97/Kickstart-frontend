@@ -12,13 +12,10 @@
                 <h1>Kickstart-frontend</h1>
             </div>
             <div id="contents">
-                <div style="height: 60px;">
-                    <a href="addhost.html" class="button newhost-btn"><span>Add Host</span></a><a href="edit_base.html" class="button edit-btn"><span>Edit base Kickstart</span></a><a href="edit.html?id=defaults" class="button edit-btn"><span>Edit defaults</span></a>
-                </div>
-                <h2>Remaining</h2>
-                {remaining}
-                <h2>Done</h2>
-                {done}
+                <form action="post">
+                    <button type="submit">Submit</button>
+                    <textarea name="kickstart">{base_kickstart}</textarea>
+                </form>
             </div>
         </div>
     </body>

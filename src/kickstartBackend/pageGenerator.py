@@ -7,8 +7,10 @@ basedir = os.path.dirname(os.path.abspath(__file__))
 HTML_INDEX = open(os.path.join(basedir, 'index.html'), 'rt').read()
 HTML_INDEX_BLOCK = open(os.path.join(basedir, 'index_block.html'), 'rt').read()
 HTML_EDIT = open(os.path.join(basedir, 'edit.html'), 'rt').read()
+HTML_EDIT_BASE = open(os.path.join(basedir, 'edit_base.html'), 'rt').read()
 # TODO: Might want to change this path.
-BASE_KICKSTART = open(os.path.join(basedir, '..', 'base.ks')).read()
+BASE_KICKSTART_LOCATION = os.path.join(basedir, '..', 'base.ks')
+BASE_KICKSTART = open(BASE_KICKSTART_LOCATION).read()
 KS_STATIC = ('network --bootproto=static --ip="{net_ip}"'
              '--netmask="{net_netmask}" --gateway="{net_gateway}"'
              '--nameserver="{net_nameserver}" --device=link')
@@ -212,4 +214,14 @@ def open_first_kickstart():
 
 
 def edit_base_kickstart():
-    pass
+    """Generate HTML for editing base kickstart."""
+    return HTML_EDIT_BASE.format(base_kickstart=BASE_KICKSTART)
+
+
+def save_base_kickstart(base):
+    # TODO: Finish this function.
+    # Write new file to disk
+    open(BASE_KICKSTART_LOCATION, 'wt').write(base)
+    global BASE_KICKSTART
+    BASE_KICKSTART = base
+    return generate_redirect('index.html')
