@@ -89,8 +89,9 @@ def print_ks():
     return pageGenerator.generate_kickstart(id)
 
 # Actually call the test.
-#test_write()
-#print(pageGenerator.generate_index())
+test_write()
+##print(pageGenerator.generate_index())
 #print(print_edit())
 #print(pageGenerator.generate_redirect('https://tweakers.net'))
-print(print_ks())
+#print(print_ks())
+#print(pageGenerator.edit_base_kickstart())
