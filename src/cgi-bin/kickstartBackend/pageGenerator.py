@@ -1,4 +1,5 @@
 import os
+import uuid
 import crypt
 from . import db
 from ipaddress import ip_network
@@ -75,7 +76,10 @@ def generate_edit(id):
                       '*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$')
     regex_ip = ('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}'
                 '([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$')
-    net_netmask = ip_network('0.0.0.0/' + hostdata['net-netmask']).prefixlen
+    if hostdata['net-netmask'] == '':
+        net_netmask = ''
+    else:
+        net_netmask = ip_network('0.0.0.0/' + hostdata['net-netmask']).prefixlen
     # Extract the 3 DHCP servers.
     dnsList = hostdata['net-nameserver'].split(',')
     # This makes me feel dirty.
@@ -161,7 +165,7 @@ def generate_redirect(url):
                 <h1>Redirecting.</h1>
                 <p>Redirecting you to <a href="{url}">{url}</a>.</p>
                 <script>
-                    alert("{url}");
+                    // alert("{url}");
                     window.location.replace("{url}");
                 </script>
             </body>
@@ -190,7 +194,7 @@ def process_edit(data):
         data['order'] = 0
     # TODO: You shouldn't trust user input. Yet we just push everything to db.
     # WARNING: FIX THIS SECURITY HOLE.
-    db.write_data(data)
+    db.write_host(data)
     if queueTop:
         db.move_top(data['id'])
     return generate_redirect('index.html')
@@ -227,3 +231,8 @@ def save_base_kickstart(base):
     global BASE_KICKSTART
     BASE_KICKSTART = base
     return generate_redirect('index.html')
+
+
+def add_host():
+    newUuid = str(uuid.uuid4())
+    return generate_redirect('edit.html?id={}'.format(newUuid))
