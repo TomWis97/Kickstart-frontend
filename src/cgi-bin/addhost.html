@@ -1,0 +1,6 @@
+import cgitb
+import cgi
+cgitb.enable()
+from kickstartBackend import pageGenerator
+print("Content-Type: text/html\n\n")
+print(pageGenerator.add_host())

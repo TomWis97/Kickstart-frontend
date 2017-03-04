@@ -1,0 +1,12 @@
+import cgitb
+import cgi
+import os
+cgitb.enable()
+from kickstartBackend import pageGenerator
+print("Content-Type: text/html\n\n")
+if os.environ['REQUEST_METHOD'] == 'GET':
+    try:
+        id = formdata['id'].value
+    except:
+        raise ValueError("Missing ID!")
+    print(pageGenerator.process_top(id))

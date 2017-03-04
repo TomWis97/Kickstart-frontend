@@ -1,0 +1,32 @@
+import cgitb
+import cgi
+import os
+cgitb.enable()
+from kickstartBackend import pageGenerator
+print("Content-Type: text/html\n\n")
+formdata = cgi.FieldStorage()
+if os.environ['REQUEST_METHOD'] == 'POST':
+    # Prepare dictionary.
+    varList = ('id', 'net-hostname', 'net-type', 'net-ip', 'net-netmask',
+               'net-gateway', 'net-nameserver', 'root-password', 'user-name',
+               'user-gecos', 'user-groups', 'user-password')
+    data = {}
+    # "order" gets special treatment because it has to be an integer.
+    try:
+        data['order'] = formdata['order'].value
+    except:
+        data['order'] = 0
+    for item in varList:
+        try:
+            data[item] = formdata['item1'].value
+        except:
+            # Key is probably not found.
+            data[item] = ''
+    print(pageGenerator.process_edit(data))
+elif os.environ['REQUEST_METHOD'] == 'GET':
+    id = formdata['id'].value
+    try:
+        id = formdata['id'].value
+    except:
+        raise ValueError("Missing ID!")
+    print(pageGenerator.generate_edit(id))
