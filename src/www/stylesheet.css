@@ -118,10 +118,10 @@ form button {
 @font-face {
         font-family: 'Open Sans';
         font-style: normal;
-        src: url('fonts/OpenSans-Regular.ttf');
+        src: url('/fonts/OpenSans-Regular.ttf');
 }
 @font-face {
         font-family: 'Roboto';
         font-style: normal;
-        src: url('fonts/Roboto-Light.ttf');
+        src: url('/fonts/Roboto-Light.ttf');
 }

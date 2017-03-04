@@ -58,7 +58,7 @@ def createdb():
                           'BAVqANxPtLJr1Um0XpQsqlQ5PvI3vCmkt3bTwKY1NrGLSJUAgqv'
                           'gT21')
     }
-    db.write_host(defaults)
+    write_host(defaults)
 
 
 def write_host(data):

@@ -6,7 +6,7 @@ DATABASE_PATH = '/tmp/ksdb.sqlite'
 def test_write():
     """Not to be used in production. Test code for this module."""
     import os
-    os.remove(DATABASE_PATH)
+    #os.remove(DATABASE_PATH)
     db.createdb()
     data1 = {
         'id': str(uuid.uuid4()),

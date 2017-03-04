@@ -9,7 +9,7 @@ HTML_INDEX_BLOCK = open(os.path.join(basedir, 'index_block.html'), 'rt').read()
 HTML_EDIT = open(os.path.join(basedir, 'edit.html'), 'rt').read()
 HTML_EDIT_BASE = open(os.path.join(basedir, 'edit_base.html'), 'rt').read()
 # TODO: Might want to change this path.
-BASE_KICKSTART_LOCATION = os.path.join(basedir, '..', 'base.ks')
+BASE_KICKSTART_LOCATION = os.path.join('/data', 'base.ks')
 BASE_KICKSTART = open(BASE_KICKSTART_LOCATION).read()
 KS_STATIC = ('network --bootproto=static --ip="{net_ip}"'
              '--netmask="{net_netmask}" --gateway="{net_gateway}"'
@@ -36,6 +36,8 @@ def generate_index():
     notDoneHosts = []
     doneHosts = []
     for host in allHosts:
+        if host['id'] == 'default':
+            continue
         if host['done'] == 0:
             notDoneHosts.append(host)
         elif host['done'] == 1:
