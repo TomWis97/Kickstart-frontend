@@ -3,7 +3,7 @@ import uuid
 
 
 # TODO Change path to /data before putting it in a Docker container.
-DATABASE_PATH = '/tmp/ksdb.sqlite'
+DATABASE_PATH = '/data/ksdb.sqlite'
 
 
 def _dict_factory(cursor, row):
