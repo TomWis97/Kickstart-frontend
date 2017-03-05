@@ -2,7 +2,8 @@ FROM alpine
 
 # Phase 1: DHCP server
 RUN apk update && \
-    apk add dhcp
+    apk add dhcp && \
+    touch /var/lib/dhcp/dhcpd.leases
 COPY conf/dhcpd.conf /etc/dhcp/dhcpd.conf
 
 # Phase 2: PXE server
@@ -31,4 +32,4 @@ RUN apk update && \
 # Declare volume at the end. Changes made after this will be discarded.
 VOLUME ["/data"]
 EXPOSE 80 69
-CMD /usr/sbin/uwsgi /etc/uwsgi_config.ini & /usr/sbin/nginx -c /etc/nginx/nginx.conf
+CMD /usr/sbin/uwsgi /etc/uwsgi_config.ini & /usr/sbin/nginx -c /etc/nginx/nginx.conf &
