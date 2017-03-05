@@ -30,5 +30,5 @@ RUN apk update && \
     apk add p7zip
 # Declare volume at the end. Changes made after this will be discarded.
 VOLUME ["/data"]
-EXPOSE 80
+EXPOSE 80 69
 CMD /usr/sbin/uwsgi /etc/uwsgi_config.ini & /usr/sbin/nginx -c /etc/nginx/nginx.conf
