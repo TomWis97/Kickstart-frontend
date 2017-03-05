@@ -18,6 +18,11 @@ splitPage = page.split('<br><br>')
 # Remove the random newlines.
 urlsString = ''.join(line.strip() for line in splitPage[3])
 urlsList = re.findall(r"(?<=href=').+?(?=')", urlsString)
+# DEBUGGING
+print("urlsString", urlsString)
+print("newline")
+print("urlsList:", urlsList)
+exit(1)
 try:
     returnUrl = random.choice(urlsList)
 except:
@@ -26,7 +31,4 @@ except:
     returnUrl = urlsList[3] # Chosen by a faire dice roll.
     # Guaranteed to be random.
     # https://xkcd.com/221/
-    # DEBUGGING
-    print("urlsList:", urlsList)
-    exit(1)
 print(returnUrl)
