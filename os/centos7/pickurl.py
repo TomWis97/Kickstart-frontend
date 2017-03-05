@@ -26,4 +26,7 @@ except:
     returnUrl = urlsList[3] # Chosen by a faire dice roll.
     # Guaranteed to be random.
     # https://xkcd.com/221/
+    # DEBUGGING
+    print("urlsList:", urlsList)
+    exit(1)
 print(returnUrl)
