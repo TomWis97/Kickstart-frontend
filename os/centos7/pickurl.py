@@ -11,6 +11,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 downloadPage = urllib.request.urlopen(
     'https://www.centos.org/download/', context=ctx).read().decode('UTF-8')
+print("DownloadPage:", downloadPage)
 mirrorListUrl = re.search(regexString, downloadPage).group(0)
 # Get mirror list.
 page = urllib.request.urlopen(mirrorListUrl).read().decode('UTF-8')
