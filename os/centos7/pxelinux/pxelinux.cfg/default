@@ -8,7 +8,7 @@ label linux
   menu label ^Install system
   menu default
   kernel vmlinuz
-  append initrd=initrd.img ip=dhcp inst.repo=http://10.255.255.10/centos7
+  append initrd=initrd.img ip=dhcp inst.repo=http://10.255.255.10/iso inst.ks=http://10.255.255.10/cgi-bin/ks.html
 label rescue
   menu label ^Rescue installed system
   kernel vmlinuz
