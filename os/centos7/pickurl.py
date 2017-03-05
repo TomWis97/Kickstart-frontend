@@ -18,4 +18,12 @@ splitPage = page.split('<br><br>')
 # Remove the random newlines.
 urlsString = ''.join(line.strip() for line in splitPage[3])
 urlsList = re.findall(r"(?<=href=').+?(?=')", urlsString)
-print(random.choice(urlsList))
+try:
+    returnUrl = random.choice(urlsList)
+except:
+    # Docker hub does not seem to like random numbers.
+    # So we just fix it this way:
+    returnUrl = urlsList[3] # Chosen by a faire dice roll.
+    # Guaranteed to be random.
+    # https://xkcd.com/221/
+print(returnUrl)
