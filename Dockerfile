@@ -37,4 +37,4 @@ RUN apk update && \
 # Declare volume at the end. Changes made after this will be discarded.
 VOLUME ["/data"]
 EXPOSE 80 69
-CMD ["/usr/bin/supervisord"]
+CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
