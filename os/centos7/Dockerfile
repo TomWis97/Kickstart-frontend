@@ -1,4 +1,4 @@
-FROM tomwis97/kickstart-frontend
+FROM tomwis97/kickstart-frontend:latest
 
 RUN mkdir /var/tftpboot/pxelinux
 COPY pxelinux /var/tftpboot/pxelinux
