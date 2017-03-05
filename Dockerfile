@@ -26,10 +26,15 @@ RUN mkdir /var/www/iso && \
 COPY src/tests.py /usr/lib/cgi-bin/tests.py
 RUN cd /usr/lib/cgi-bin && python3 tests.py && rm tests.py
 
-# Phase 4: Finishing up.
+# Phase 4: Installing supervisord
+RUN apk update && \
+    apk add supervisor
+COPY conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Phase 5: Finishing up.
 RUN apk update && \
     apk add p7zip
 # Declare volume at the end. Changes made after this will be discarded.
 VOLUME ["/data"]
 EXPOSE 80 69
-CMD /usr/sbin/uwsgi /etc/uwsgi_config.ini & /usr/sbin/nginx -c /etc/nginx/nginx.conf &
+CMD ["/usr/bin/supervisord"]
