@@ -15,15 +15,19 @@ mirrorListUrl = re.search(regexString, downloadPage).group(0)
 # Get mirror list.
 page = urllib.request.urlopen(mirrorListUrl).read().decode('UTF-8')
 splitPage = page.split('<br><br>')
+validSections = []
+for i in splitPage:
+    if i.startswith("<a href"):
+        validSections.append(i)
+correctSection = validSections[0]
 # Remove the random newlines.
-urlsString = ''.join(line.strip() for line in splitPage[3])
+urlsString = ''.join(line.strip() for line in correctSection)
 urlsList = re.findall(r"(?<=href=').+?(?=')", urlsString)
 # DEBUGGING
 print("page", page)
 print("urlsString", urlsString)
 print("newline")
 print("urlsList:", urlsList)
-exit(1)
 try:
     returnUrl = random.choice(urlsList)
 except:
@@ -33,3 +37,4 @@ except:
     # Guaranteed to be random.
     # https://xkcd.com/221/
 print(returnUrl)
+exit(1)
