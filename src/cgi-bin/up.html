@@ -10,4 +10,4 @@ if os.environ['REQUEST_METHOD'] == 'GET':
         id = formdata['id'].value
     except:
         raise ValueError("Missing ID!")
-    print(pageGenerator.process_top(id))
+    print(pageGenerator.process_move(id))
