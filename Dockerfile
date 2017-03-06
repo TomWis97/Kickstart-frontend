@@ -33,7 +33,7 @@ COPY conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Phase 5: Finishing up.
 RUN apk update && \
-    apk add p7zip
+    apk add xorriso
 # Declare volume at the end. Changes made after this will be discarded.
 VOLUME ["/data"]
 EXPOSE 80 69
