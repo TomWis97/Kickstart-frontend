@@ -7,6 +7,7 @@ keyboard --vckeymap=us-intl --xlayouts='us(intl)'
 timezone Europe/Amsterdam
 firstboot --disable
 ignoredisk --only-use=sda
+clearpart --all --initlabel --drives=sda
 
 {net_settings}
 network --hostname="{net_hostname}"
@@ -22,6 +23,9 @@ url --url http://10.255.255.10/iso
 {root_settings}
 user --name="{user_name}" --gecos="{user_gecos}" --password="{user_password}" --iscrypted --groups="{user_groups}"
 
+%packages
+@core
+%end
 
 # Maybe interesting options:
 # - firewall
