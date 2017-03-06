@@ -18,7 +18,7 @@ if os.environ['REQUEST_METHOD'] == 'POST':
         data['order'] = 0
     for item in varList:
         try:
-            data[item] = formdata['item1'].value
+            data[item] = formdata[item].value
         except:
             # Key is probably not found.
             data[item] = ''
