@@ -17,7 +17,7 @@ eula --agreed
 selinux --enforcing
 
 install
-url --url http://server/path
+url --url http://10.255.255.10/iso
 
 {root_settings}
 user --name="{user_name}" --gecos="{user_gecos}" --password="{user_password}" --iscrypted --groups="{user_groups}"
