@@ -135,7 +135,7 @@ def read_all_hosts():
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = _dict_factory
     c = conn.cursor()
-    c.execute('SELECT * FROM hosts ORDER BY "order"')
+    c.execute('SELECT * FROM hosts ORDER BY "order" DESC')
     data = c.fetchall()
     conn.close()
     return data
