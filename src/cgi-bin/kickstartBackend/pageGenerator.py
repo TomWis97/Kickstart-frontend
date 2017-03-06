@@ -107,7 +107,6 @@ def generate_edit(id):
     return HTML_EDIT.format(
         regex_ip=regex_ip,
         regex_hostname=regex_hostname,
-        id=id,
         net_hostname=hostdata['net-hostname'],
         net_type_static=net_type_static,
         net_type_dhcp=net_type_dhcp,

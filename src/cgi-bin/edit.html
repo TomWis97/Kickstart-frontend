@@ -7,10 +7,12 @@ print("Content-Type: text/html\n\n")
 formdata = cgi.FieldStorage()
 if os.environ['REQUEST_METHOD'] == 'POST':
     # Prepare dictionary.
-    varList = ('id', 'net-hostname', 'net-type', 'net-ip', 'net-netmask',
+    varList = ('net-hostname', 'net-type', 'net-ip', 'net-netmask',
                'net-gateway', 'net-nameserver', 'root-password', 'user-name',
                'user-gecos', 'user-groups', 'user-password')
     data = {}
+    # Make sure that 'id' gets set.
+    data['id'] = formdata['id'].value
     # "order" gets special treatment because it has to be an integer.
     try:
         data['order'] = formdata['order'].value
