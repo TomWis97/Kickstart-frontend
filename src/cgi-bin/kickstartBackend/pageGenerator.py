@@ -17,6 +17,8 @@ KS_STATIC = ('network --bootproto=static --ip="{net_ip}" '
              '--nameserver="{net_nameserver}" --device=link')
 KS_DHCP = 'network --bootproto=dhcp --device=link'
 KS_ROOT = 'rootpw --iscrypted "{root_password}"'
+KS_USER = ('user --name="{user_name}" --gecos="{user_gecos}" ' 
+           '--password="{user_password}" --iscrypted --groups="{user_groups}"')
 
 # Note to self:
 # For calculating subnetmasks, use ipaddress.ip_network.
@@ -143,14 +145,20 @@ def generate_kickstart(id):
         root_settings = ''
     else:
         root_settings = KS_ROOT.format(root_password=data['root-password'])
+    if data['user-name']:
+        # An username has been given. Generate user data.
+        user_settings = KS_USER.format(
+            user_name=data['user-name']
+            user_gecos=data['user-gecos']
+            user_groups=data['user-groups']
+            user_password=data['user-password'])
+    else:
+        user_settings = ''
     return BASE_KICKSTART.format(
         net_settings=net_settings,
         root_settings=root_settings,
         net_hostname=data['net-hostname'],
-        user_name=data['user-name'],
-        user_gecos=data['user-gecos'],
-        user_groups=data['user-groups'],
-        user_password=data['user-password'])
+        user_settings=user_settings)
 
 
 def generate_redirect(url):

@@ -12,6 +12,9 @@ clearpart --all --initlabel --drives=sda
 network --hostname="{net_hostname}"
 {net_settings}
 
+# Shut the VM down after installing
+shutdown 
+
 # Might wanna change for EFI booting.
 bootloader --location=mbr --boot-drive=sda
 eula --agreed
@@ -21,7 +24,7 @@ install
 url --url http://10.255.255.10/iso
 
 {root_settings}
-user --name="{user_name}" --gecos="{user_gecos}" --password="{user_password}" --iscrypted --groups="{user_groups}"
+{user_settings}
 
 %packages
 @core
