@@ -148,9 +148,9 @@ def generate_kickstart(id):
     if data['user-name']:
         # An username has been given. Generate user data.
         user_settings = KS_USER.format(
-            user_name=data['user-name']
-            user_gecos=data['user-gecos']
-            user_groups=data['user-groups']
+            user_name=data['user-name'],
+            user_gecos=data['user-gecos'],
+            user_groups=data['user-groups'],
             user_password=data['user-password'])
     else:
         user_settings = ''
