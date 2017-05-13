@@ -12,8 +12,8 @@ HTML_EDIT_BASE = open(os.path.join(basedir, 'edit_base.html'), 'rt').read()
 # TODO: Might want to change this path.
 BASE_KICKSTART_LOCATION = os.path.join('/data', 'base.ks')
 BASE_KICKSTART = open(BASE_KICKSTART_LOCATION).read()
-KS_STATIC = ('network --bootproto=static --ip="{net_ip}"'
-             '--netmask="{net_netmask}" --gateway="{net_gateway}"'
+KS_STATIC = ('network --bootproto=static --ip="{net_ip}" '
+             '--netmask="{net_netmask}" --gateway="{net_gateway}" '
              '--nameserver="{net_nameserver}" --device=link')
 KS_DHCP = 'network --bootproto=dhcp --device=link'
 KS_ROOT = 'rootpw --iscrypted "{root_password}"'

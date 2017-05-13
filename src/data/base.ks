@@ -9,8 +9,8 @@ firstboot --disable
 ignoredisk --only-use=sda
 clearpart --all --initlabel --drives=sda
 
-{net_settings}
 network --hostname="{net_hostname}"
+{net_settings}
 
 # Might wanna change for EFI booting.
 bootloader --location=mbr --boot-drive=sda
