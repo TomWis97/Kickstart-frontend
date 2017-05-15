@@ -7,7 +7,6 @@ def test_write():
     """Not to be used in production. Test code for this module."""
     import os
     #os.remove(DATABASE_PATH)
-    db.createdb()
     data1 = {
         'id': str(uuid.uuid4()),
         'order': 1,
@@ -88,8 +87,11 @@ def print_ks():
     id = db.read_all_hosts()[0]['id']
     return pageGenerator.generate_kickstart(id)
 
+# Create database
+db.createdb()
+
 # Actually call the test.
-test_write()
+#test_write()
 ##print(pageGenerator.generate_index())
 #print(print_edit())
 #print(pageGenerator.generate_redirect('https://tweakers.net'))

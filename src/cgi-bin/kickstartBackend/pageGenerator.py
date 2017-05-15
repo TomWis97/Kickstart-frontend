@@ -17,7 +17,7 @@ KS_STATIC = ('network --bootproto=static --ip="{net_ip}" '
              '--nameserver="{net_nameserver}" --device=link')
 KS_DHCP = 'network --bootproto=dhcp --device=link'
 KS_ROOT = 'rootpw --iscrypted "{root_password}"'
-KS_USER = ('user --name="{user_name}" --gecos="{user_gecos}" ' 
+KS_USER = ('user --name="{user_name}" --gecos="{user_gecos}" '
            '--password="{user_password}" --iscrypted --groups="{user_groups}"')
 
 # Note to self:
@@ -67,7 +67,7 @@ def generate_index():
     return HTML_INDEX.format(remaining=notDoneHtml, done=doneHtml)
 
 
-def generate_edit(id):
+def generate_edit(id, newhost=False):
     """Generate the edit page for host with ID."""
     # This function demonstrates a nice part of the naming within this project:
     # some_variables_with_underscores, some_with_dashes_ and someWithCamelcase
@@ -106,7 +106,13 @@ def generate_edit(id):
         net_type_static = 'checked'
     else:
         raise ValueError('Invalid net-type for host id {}'.format(id))
+    # The newhost variable is added for the clone feature.
+    if newhost:
+        hostUuid = str(uuid.uuid4())
+    else:
+        hostUuid = id
     return HTML_EDIT.format(
+        id=hostUuid,
         regex_ip=regex_ip,
         regex_hostname=regex_hostname,
         net_hostname=hostdata['net-hostname'],
